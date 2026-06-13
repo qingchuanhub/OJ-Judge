@@ -1,0 +1,38 @@
+name: Online Judge
+
+on:
+  workflow_dispatch:
+    inputs:
+      problem_id:
+        description: '题目ID'
+        required: true
+      submission_id:
+        description: '提交唯一ID'
+        required: true
+      code:
+        description: '用户代码(Base64)'
+        required: true
+
+jobs:
+  judge:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Decode user code
+        run: |
+          echo "${{ github.event.inputs.code }}" | base64 -d > user_code.cpp
+
+      - name: Run judge
+        run: |
+          mkdir -p results
+          bash judge.sh ${{ github.event.inputs.problem_id }} ${{ github.event.inputs.submission_id }}
+
+      - name: Commit results
+        run: |
+          git config user.name "OJ Bot"
+          git config user.email "bot@oj.local"
+          git add results/
+          git commit -m "Judge result for submission ${{ github.event.inputs.submission_id }}" || true
+          git push
