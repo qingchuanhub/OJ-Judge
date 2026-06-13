@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>🐍 Light OJ - C++ 进阶题库</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #f8fafc; --surface: #ffffff; --primary: #4f46e5; --primary-hover: #4338ca;
+      --primary-light: #eef2ff; --text: #1e293b; --text-secondary: #64748b;
+      --border: #e2e8f0; --success-bg: #ecfdf5; --success-text: #065f46;
+      --error-bg: #fef2f2; --error-text: #991b1b; --warning-bg: #fffbeb;
+      --warning-text: #92400e; --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+      --shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.1);
+      --radius: 12px; --transition: 0.2s ease; --code-bg: #1e293b; --code-text: #e2e8f0;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background-color: var(--bg); color: var(--text); line-height: 1.6;
+      min-height: 100vh; display: flex; flex-direction: column; align-items: center;
+      padding: 2rem 1rem;
+    }
+    .container { width: 100%; max-width: 1100px; display: flex; flex-direction: column; gap: 2rem; }
+    .header { text-align: center; }
+    .header h1 {
+      font-size: 2.25rem; font-weight: 700;
+      background: linear-gradient(135deg, #4f46e5, #7c3aed);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text; margin-bottom: 0.25rem;
+    }
+    .header p { color: var(--text-secondary); font-size: 1rem; }
+    .main-grid { display: grid; grid-template-columns: 300px 1fr; gap: 1.5rem; align-items: start; }
+    .problem-sidebar {
+      background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow-sm);
+      padding: 1.25rem; display: flex; flex-direction: column; gap: 0.75rem;
+      border: 1px solid var(--border);
+    }
+    .problem-sidebar h2 { font-size: 1.1rem; font-weight: 600; margin-bottom: 0.25rem; }
+    .problem-card {
+      background: var(--bg); border: 1px solid var(--border); border-radius: 8px;
+      padding: 1rem; cursor: pointer; transition: all var(--transition);
+    }
+    .problem-card:hover { border-color: var(--primary); box-shadow: 0 0 0 1px var(--primary); transform: translateY(-1px); }
+    .problem-card.active { background: var(--primary-light); border-color: var(--primary); box-shadow: 0 0 0 2px var(--primary); }
+    .problem-card .problem-title { font-weight: 600; font-size: 0.95rem; margin-bottom: 0.25rem; }
+    .problem-card .problem-desc { font-size: 0.8rem; color: var(--text-secondary); }
+    .main-panel { display: flex; flex-direction: column; gap: 1.5rem; }
+    .detail-card {
+      background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow-sm);
+      padding: 1.5rem; border: 1px solid var(--border);
+    }
+    .detail-card h3 { font-size: 1.3rem; font-weight: 600; margin-bottom: 0.75rem; }
+    .description { color: var(--text); margin-bottom: 1rem; white-space: pre-wrap; }
+    .io-example { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+    .io-block {
+      background: #f1f5f9; border-radius: 8px; padding: 0.75rem 1rem; flex: 1; min-width: 150px;
+    }
+    .io-label { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; color: var(--text-secondary); margin-bottom: 0.25rem; letter-spacing: 0.05em; }
+    .io-block pre { font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; color: var(--text); white-space: pre-wrap; background: transparent; padding: 0; }
+    .editor-section {
+      background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow);
+      border: 1px solid var(--border); overflow: hidden;
+    }
+    .editor-header {
+      background: var(--code-bg); padding: 0.6rem 1.2rem; display: flex;
+      justify-content: space-between; align-items: center;
+    }
+    .editor-header span { color: #94a3b8; font-size: 0.85rem; font-weight: 500; font-family: 'JetBrains Mono', monospace; }
+    .lang-badge { background: rgba(255,255,255,0.1); padding: 0.2rem 0.7rem; border-radius: 20px; color: #cbd5e1; font-size: 0.75rem; }
+    textarea {
+      width: 100%; min-height: 220px; background: var(--code-bg); color: var(--code-text);
+      border: none; padding: 1.2rem; font-family: 'JetBrains Mono', monospace;
+      font-size: 0.9rem; line-height: 1.6; resize: vertical; outline: none; tab-size: 4;
+    }
+    textarea::placeholder { color: #64748b; }
+    .submit-area {
+      display: flex; justify-content: flex-end; gap: 0.75rem; padding: 1rem 1.2rem;
+      background: #f8fafc; border-top: 1px solid var(--border);
+    }
+    .btn {
+      display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.6rem 1.5rem;
+      font-size: 0.9rem; font-weight: 600; border-radius: 8px; border: none;
+      cursor: pointer; transition: all var(--transition); font-family: 'Inter', sans-serif;
+    }
+    .btn-primary { background: var(--primary); color: white; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    .btn-primary:hover { background: var(--primary-hover); transform: translateY(-1px); box-shadow: 0 4px 6px rgba(79,70,229,0.25); }
+    .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+    .result-panel {
+      background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow-sm);
+      border: 1px solid var(--border); padding: 1.25rem; min-height: 80px;
+    }
+    .result-status { display: flex; align-items: center; gap: 0.5rem; font-weight: 600; margin-bottom: 0.75rem; }
+    .result-accepted { color: var(--success-text); }
+    .result-wrong { color: var(--error-text); }
+    .result-error { color: var(--warning-text); }
+    .result-detail {
+      background: #f8fafc; border-radius: 8px; padding: 1rem;
+      font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; white-space: pre-wrap;
+      border: 1px solid var(--border); max-height: 200px; overflow-y: auto;
+    }
+    @media (max-width: 768px) {
+      .main-grid { grid-template-columns: 1fr; }
+      .header h1 { font-size: 1.8rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>🐍 Light OJ</h1>
+      <p>C++ 进阶题库 · 图论 / 递归 / 考级真题</p>
+    </div>
+    <div class="main-grid">
+      <aside class="problem-sidebar" id="problem-list">
+        <h2>📚 题目列表</h2>
+      </aside>
+      <main class="main-panel">
+        <section class="detail-card" id="problem-detail">
+          <h3 id="detail-title"></h3>
+          <div id="detail-desc" class="description"></div>
+          <div class="io-example">
+            <div class="io-block">
+              <div class="io-label">📥 示例输入</div>
+              <pre id="sample-input"></pre>
+            </div>
+            <div class="io-block">
+              <div class="io-label">📤 期望输出</div>
+              <pre id="sample-output"></pre>
+            </div>
+          </div>
+        </section>
+        <section class="editor-section">
+          <div class="editor-header">
+            <span>main.cpp</span>
+            <span class="lang-badge">C++</span>
+          </div>
+          <textarea id="code" placeholder="// 在此输入你的 C++ 代码..."></textarea>
+          <div class="submit-area">
+            <button class="btn btn-primary" id="run-btn">
+              <span>▶</span> 提交评测
+            </button>
+          </div>
+        </section>
+        <section class="result-panel" id="output">
+          <div style="color: var(--text-secondary); text-align: center;">👆 点击“提交评测”运行你的代码</div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      const JUDGE0_BASE = 'https://judge0-ce.p.rapidapi.com';
+      const HEADERS = { 'Content-Type': 'application/json' };
+      const LANGUAGE_ID = 54; // C++ GCC 9.2.0
+
+      const problems = [
+        // ========== 基础题（原有） ==========
+        { id: 1, title: "A + B", description: "输入两个整数 A 和 B（空格分隔），输出它们的和。", input: "3 5\n", expected: "8" },
+        { id: 2, title: "两数乘积", description: "输入两个整数，输出它们的乘积。", input: "4 6\n", expected: "24" },
+        { id: 3, title: "绝对值", description: "输入一个整数，输出它的绝对值。", input: "-7\n", expected: "7" },
+        { id: 4, title: "判断奇偶", description: "输入一个整数 N，如果是偶数输出 \"Even\"，奇数输出 \"Odd\"。", input: "5\n", expected: "Odd" },
+        { id: 5, title: "阶乘", description: "输入 N (1≤N≤10)，输出 N!。", input: "5\n", expected: "120" },
+        { id: 6, title: "最大值", description: "输入三个整数（空格分隔），输出最大值。", input: "7 2 9\n", expected: "9" },
+
+        // ========== 递归专项 ==========
+        { id: 7, title: "斐波那契数列", description: "输入整数 N (0≤N≤20)，输出斐波那契第 N 项（F0=0, F1=1）。", input: "7\n", expected: "13" },
+        { id: 8, title: "汉诺塔移动步数", description: "输入盘子数 N (1≤N≤15)，输出所需移动步数（2^N -1）。", input: "4\n", expected: "15" },
+        { id: 9, title: "数字各位和", description: "输入一个非负整数，输出各位数字之和（递归实现加分）。", input: "12345\n", expected: "15" },
+
+        // ========== 图论基础 ==========
+        { id: 10, title: "无向图连通分量", description: "输入顶点数 N 和边数 M，接着 M 行每行两个顶点编号（1~N），统计连通分量个数。\n示例：N=5 M=3 边(1,2)(2,3)(4,5)", input: "5 3\n1 2\n2 3\n4 5\n", expected: "2" },
+        { id: 11, title: "有向图入度统计", description: "输入 N 个顶点 M 条有向边，输出顶点 1~N 的入度（空格分隔）。\n示例：N=4 M=4 边(1,2)(2,3)(3,4)(4,1)", input: "4 4\n1 2\n2 3\n3 4\n4 1\n", expected: "1 1 1 1" },
+
+        // ========== 邻接表应用 ==========
+        { id: 12, title: "邻接表存储与遍历", description: "输入 N M，M 条无向边，构建邻接表，输出从顶点1开始的DFS序列（顶点按邻接表顺序从小到大输出）。\n示例：N=5 M=4 边(1,2)(1,3)(2,4)(3,5)", input: "5 4\n1 2\n1 3\n2 4\n3 5\n", expected: "1 2 4 3 5" },
+        { id: 13, title: "最短路径（无权图）", description: "输入 N M 及起点 S，M 条无向边，输出从 S 到各顶点的最短距离（空格分隔，不可达为-1）。\n示例：N=4 M=3 S=1 边(1,2)(2,3)(1,3)", input: "4 3 1\n1 2\n2 3\n1 3\n", expected: "0 1 1 -1" },
+
+        // ========== 工信部C++考级真题风格 ==========
+        { id: 14, title: "水仙花数", description: "输入一个三位数 N，判断是否为水仙花数（各位立方和等于自身），输出 Yes 或 No。", input: "153\n", expected: "Yes" },
+        { id: 15, title: "质因数分解", description: "输入一个整数 N (2≤N≤10000)，输出其质因数分解的结果（格式：N=2*3*3*...，按从小到大）。\n示例：60", input: "60\n", expected: "60=2*2*3*5" },
+        { id: 16, title: "字符串中数字个数", description: "输入一行字符串（不含空格），输出其中数字字符的个数。", input: "abc123def45\n", expected: "5" },
+        { id: 17, title: "矩阵转置", description: "输入 N (方阵大小)，接着 N*N 个整数，输出转置后的矩阵（每行空格分隔）。\n示例：2×2 矩阵 1 2 / 3 4", input: "2\n1 2\n3 4\n", expected: "1 3\n2 4" },
+        { id: 18, title: "简单排序", description: "输入 N 及 N 个整数，输出升序排序后的序列（空格分隔）。", input: "5 3 1 4 1 5\n", expected: "1 1 3 4 5" }
+      ];
+
+      let currentProblem = problems[0];
+
+      const problemListEl = document.getElementById('problem-list');
+      const detailTitle = document.getElementById('detail-title');
+      const detailDesc = document.getElementById('detail-desc');
+      const sampleInput = document.getElementById('sample-input');
+      const sampleOutput = document.getElementById('sample-output');
+      const codeTextarea = document.getElementById('code');
+      const runBtn = document.getElementById('run-btn');
+      const outputEl = document.getElementById('output');
+
+      function escapeHtml(text) {
+        return String(text).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
+      }
+
+      function renderProblemList() {
+        problemListEl.innerHTML = '<h2>📚 题目列表</h2>';
+        problems.forEach(p => {
+          const card = document.createElement('div');
+          card.className = `problem-card ${p.id === currentProblem.id ? 'active' : ''}`;
+          card.innerHTML = `<div class="problem-title">${escapeHtml(p.title)}</div><div class="problem-desc">${escapeHtml(p.description.substring(0, 50))}...</div>`;
+          card.addEventListener('click', () => switchProblem(p));
+          problemListEl.appendChild(card);
+        });
+      }
+
+      function switchProblem(problem) {
+        currentProblem = problem;
+        codeTextarea.value = '';
+        outputEl.innerHTML = '<div style="color: var(--text-secondary); text-align: center;">👆 点击“提交评测”运行你的代码</div>';
+        updateDetailPanel();
+        renderProblemList();
+      }
+
+      function updateDetailPanel() {
+        detailTitle.textContent = `📝 ${currentProblem.title}`;
+        detailDesc.textContent = currentProblem.description;
+        sampleInput.textContent = currentProblem.input.trimEnd();
+        sampleOutput.textContent = currentProblem.expected;
+      }
+
+      async function handleSubmit() {
+        const code = codeTextarea.value.trim();
+        if (!code) {
+          outputEl.innerHTML = '<div class="result-status result-error">⚠️ 请先输入代码</div>';
+          return;
+        }
+        runBtn.disabled = true;
+        outputEl.innerHTML = '<div class="result-status" style="color: var(--text-secondary);">⏳ 云端编译运行中（Judge0）...</div>';
+        try {
+          const submitResp = await fetch(`${JUDGE0_BASE}/submissions?base64_encoded=false&wait=true`, {
+            method: 'POST', headers: HEADERS,
+            body: JSON.stringify({ source_code: code, language_id: LANGUAGE_ID, stdin: currentProblem.input })
+          });
+          if (!submitResp.ok) throw new Error(`提交失败 (${submitResp.status})`);
+          const result = await submitResp.json();
+          const status = result.status?.id;
+          if (status === 3) {
+            const actual = (result.stdout || '').replace(/\s+$/, '');
+            const expected = currentProblem.expected.replace(/\s+$/, '');
+            if (actual === expected) {
+              outputEl.innerHTML = `<div class="result-status result-accepted">✅ 答案正确 (Accepted)</div><div class="result-detail">${escapeHtml(actual) || '(无输出)'}</div>`;
+            } else {
+              outputEl.innerHTML = `<div class="result-status result-wrong">❌ 答案错误 (Wrong Answer)</div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 0.5rem;">
+                  <div><div style="font-weight:600;">期望输出</div><div class="result-detail">${escapeHtml(expected) || '(空)'}</div></div>
+                  <div><div style="font-weight:600;">你的输出</div><div class="result-detail">${escapeHtml(actual) || '(空)'}</div></div>
+                </div>`;
+            }
+          } else if (status === 6) {
+            outputEl.innerHTML = `<div class="result-status result-error">⚠️ 编译错误</div><div class="result-detail" style="background:#fff7ed;">${escapeHtml(result.compile_output || '未知编译错误')}</div>`;
+          } else if (status === 5) {
+            outputEl.innerHTML = '<div class="result-status result-error">⏰ 运行超时</div>';
+          } else {
+            const msg = result.stderr || result.compile_output || result.message || '未知错误';
+            outputEl.innerHTML = `<div class="result-status result-error">⚠️ 运行错误 (状态码:${status})</div><div class="result-detail" style="background:#fff7ed;">${escapeHtml(msg)}</div>`;
+          }
+        } catch (err) {
+          outputEl.innerHTML = `<div class="result-status result-error">⚠️ 请求失败：${escapeHtml(err.message)}</div>`;
+        } finally {
+          runBtn.disabled = false;
+        }
+      }
+
+      runBtn.addEventListener('click', handleSubmit);
+      codeTextarea.addEventListener('keydown', (e) => {
+        if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+          e.preventDefault(); handleSubmit();
+        }
+      });
+
+      renderProblemList();
+      updateDetailPanel();
+      codeTextarea.value = '';
+    })();
+  </script>
+</body>
+</html>
