@@ -3,150 +3,174 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>🐍 Light OJ - C++ 题库</title>
+  <title>🐍 Light OJ - C++ 进阶题库</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <style>
-    :root { --bg: #f8fafc; --surface: #ffffff; --primary: #4f46e5; --primary-hover: #4338ca; --primary-light: #eef2ff; --text: #1e293b; --text-secondary: #64748b; --border: #e2e8f0; --success-bg: #ecfdf5; --success-text: #065f46; --error-bg: #fef2f2; --error-text: #991b1b; --warning-bg: #fffbeb; --warning-text: #92400e; --shadow-sm: 0 1px 2px rgba(0,0,0,0.05); --shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.1); --radius: 12px; --transition: 0.2s ease; --code-bg: #1e293b; --code-text: #e2e8f0; }
+    :root {
+      --bg: #f8fafc; --surface: #ffffff; --primary: #4f46e5; --primary-hover: #4338ca;
+      --primary-light: #eef2ff; --text: #1e293b; --text-secondary: #64748b;
+      --border: #e2e8f0; --success-bg: #ecfdf5; --success-text: #065f46;
+      --error-bg: #fef2f2; --error-text: #991b1b; --warning-bg: #fffbeb;
+      --warning-text: #92400e; --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+      --shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.1);
+      --radius: 12px; --transition: 0.2s ease; --code-bg: #1e293b; --code-text: #e2e8f0;
+    }
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Inter', system-ui, -apple-system, sans-serif; background-color: var(--bg); color: var(--text); line-height: 1.6; min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 2rem 1rem; }
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background-color: var(--bg); color: var(--text); line-height: 1.6;
+      min-height: 100vh; display: flex; flex-direction: column; align-items: center;
+      padding: 2rem 1rem;
+    }
     .container { width: 100%; max-width: 1100px; display: flex; flex-direction: column; gap: 2rem; }
     .header { text-align: center; }
-    .header h1 { font-size: 2.25rem; font-weight: 700; background: linear-gradient(135deg, #4f46e5, #7c3aed); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 0.25rem; }
+    .header h1 {
+      font-size: 2.25rem; font-weight: 700;
+      background: linear-gradient(135deg, #4f46e5, #7c3aed);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text; margin-bottom: 0.25rem;
+    }
     .header p { color: var(--text-secondary); font-size: 1rem; }
     .main-grid { display: grid; grid-template-columns: 300px 1fr; gap: 1.5rem; align-items: start; }
-    .problem-sidebar { background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow-sm); padding: 1.25rem; display: flex; flex-direction: column; gap: 0.75rem; border: 1px solid var(--border); }
+    .problem-sidebar {
+      background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow-sm);
+      padding: 1.25rem; display: flex; flex-direction: column; gap: 0.75rem;
+      border: 1px solid var(--border);
+    }
     .problem-sidebar h2 { font-size: 1.1rem; font-weight: 600; margin-bottom: 0.25rem; }
-    .empty-sidebar { text-align: center; padding: 2rem 1rem; color: var(--text-secondary); font-size: 0.9rem; background: var(--bg); border-radius: 12px; border: 1px dashed var(--border); }
-    .problem-card { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 1rem; cursor: pointer; transition: all var(--transition); }
+    .problem-card {
+      background: var(--bg); border: 1px solid var(--border); border-radius: 8px;
+      padding: 1rem; cursor: pointer; transition: all var(--transition);
+    }
     .problem-card:hover { border-color: var(--primary); box-shadow: 0 0 0 1px var(--primary); transform: translateY(-1px); }
     .problem-card.active { background: var(--primary-light); border-color: var(--primary); box-shadow: 0 0 0 2px var(--primary); }
     .problem-card .problem-title { font-weight: 600; font-size: 0.95rem; margin-bottom: 0.25rem; }
     .problem-card .problem-desc { font-size: 0.8rem; color: var(--text-secondary); }
     .main-panel { display: flex; flex-direction: column; gap: 1.5rem; }
-    .detail-card { background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow-sm); padding: 1.5rem; border: 1px solid var(--border); }
+    .detail-card {
+      background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow-sm);
+      padding: 1.5rem; border: 1px solid var(--border);
+    }
     .detail-card h3 { font-size: 1.3rem; font-weight: 600; margin-bottom: 0.75rem; }
     .description { color: var(--text); margin-bottom: 1rem; white-space: pre-wrap; }
     .io-example { display: flex; gap: 1.5rem; flex-wrap: wrap; }
-    .io-block { background: #f1f5f9; border-radius: 8px; padding: 0.75rem 1rem; flex: 1; min-width: 150px; }
+    .io-block {
+      background: #f1f5f9; border-radius: 8px; padding: 0.75rem 1rem; flex: 1; min-width: 150px;
+    }
     .io-label { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; color: var(--text-secondary); margin-bottom: 0.25rem; letter-spacing: 0.05em; }
     .io-block pre { font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; color: var(--text); white-space: pre-wrap; background: transparent; padding: 0; }
-    .empty-detail { text-align: center; padding: 2rem 1rem; color: var(--text-secondary); background: #f9fafb; border-radius: 12px; margin-top: 0.5rem; }
-    .editor-section { background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid var(--border); overflow: hidden; }
-    .editor-header { background: var(--code-bg); padding: 0.6rem 1.2rem; display: flex; justify-content: space-between; align-items: center; }
+    .editor-section {
+      background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow);
+      border: 1px solid var(--border); overflow: hidden;
+    }
+    .editor-header {
+      background: var(--code-bg); padding: 0.6rem 1.2rem; display: flex;
+      justify-content: space-between; align-items: center;
+    }
     .editor-header span { color: #94a3b8; font-size: 0.85rem; font-weight: 500; font-family: 'JetBrains Mono', monospace; }
     .lang-badge { background: rgba(255,255,255,0.1); padding: 0.2rem 0.7rem; border-radius: 20px; color: #cbd5e1; font-size: 0.75rem; }
-    textarea { width: 100%; min-height: 220px; background: var(--code-bg); color: var(--code-text); border: none; padding: 1.2rem; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; line-height: 1.6; resize: vertical; outline: none; tab-size: 4; }
+    textarea {
+      width: 100%; min-height: 220px; background: var(--code-bg); color: var(--code-text);
+      border: none; padding: 1.2rem; font-family: 'JetBrains Mono', monospace;
+      font-size: 0.9rem; line-height: 1.6; resize: vertical; outline: none; tab-size: 4;
+    }
     textarea::placeholder { color: #64748b; }
-    .submit-area { display: flex; justify-content: flex-end; gap: 0.75rem; padding: 1rem 1.2rem; background: #f8fafc; border-top: 1px solid var(--border); }
-    .btn { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.6rem 1.5rem; font-size: 0.9rem; font-weight: 600; border-radius: 8px; border: none; cursor: pointer; transition: all var(--transition); font-family: 'Inter', sans-serif; }
+    .submit-area {
+      display: flex; justify-content: flex-end; gap: 0.75rem; padding: 1rem 1.2rem;
+      background: #f8fafc; border-top: 1px solid var(--border);
+    }
+    .btn {
+      display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.6rem 1.5rem;
+      font-size: 0.9rem; font-weight: 600; border-radius: 8px; border: none;
+      cursor: pointer; transition: all var(--transition); font-family: 'Inter', sans-serif;
+    }
     .btn-primary { background: var(--primary); color: white; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
     .btn-primary:hover { background: var(--primary-hover); transform: translateY(-1px); box-shadow: 0 4px 6px rgba(79,70,229,0.25); }
-    .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; transform: none; background: #94a3b8; box-shadow: none; }
-    .result-panel { background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow-sm); border: 1px solid var(--border); padding: 1.25rem; min-height: 80px; }
+    .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+    .result-panel {
+      background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow-sm);
+      border: 1px solid var(--border); padding: 1.25rem; min-height: 80px;
+    }
     .result-status { display: flex; align-items: center; gap: 0.5rem; font-weight: 600; margin-bottom: 0.75rem; }
     .result-accepted { color: var(--success-text); }
     .result-wrong { color: var(--error-text); }
     .result-error { color: var(--warning-text); }
-    .result-detail { background: #f8fafc; border-radius: 8px; padding: 1rem; font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; white-space: pre-wrap; border: 1px solid var(--border); max-height: 200px; overflow-y: auto; }
-    .info-note { background: #f1f5f9; border-radius: 12px; padding: 1rem; text-align: center; color: #475569; font-size: 0.85rem; margin-top: 1rem; border-left: 3px solid var(--primary);}
-    @media (max-width: 768px) { .main-grid { grid-template-columns: 1fr; } .header h1 { font-size: 1.8rem; } }
+    .result-detail {
+      background: #f8fafc; border-radius: 8px; padding: 1rem;
+      font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; white-space: pre-wrap;
+      border: 1px solid var(--border); max-height: 200px; overflow-y: auto;
+    }
+    @media (max-width: 768px) {
+      .main-grid { grid-template-columns: 1fr; }
+      .header h1 { font-size: 1.8rem; }
+    }
   </style>
 </head>
 <body>
   <div class="container">
     <div class="header">
       <h1>🐍 Light OJ</h1>
-      <p>C++ 进阶题库 · 图论 / 递归 / 考级真题 · 基于 Wandbox (空库模板)</p>
+      <p>C++ 进阶题库 · 自主判题机 (GitHub Actions + Worker)</p>
     </div>
     <div class="main-grid">
       <aside class="problem-sidebar" id="problem-list">
         <h2>📚 题目列表</h2>
-        <!-- 动态渲染空状态 -->
       </aside>
       <main class="main-panel">
         <section class="detail-card" id="problem-detail">
-          <h3 id="detail-title">📌 当前无题目</h3>
+          <h3 id="detail-title"></h3>
           <div id="detail-desc" class="description"></div>
-          <div class="io-example" id="io-example-area">
-            <div class="io-block"><div class="io-label">📥 示例输入</div><pre id="sample-input">-</pre></div>
-            <div class="io-block"><div class="io-label">📤 期望输出</div><pre id="sample-output">-</pre></div>
-          </div>
-          <div class="info-note">
-            💡 提示：题库为空，所有预置题目已删除。您可以在“题目列表”区域手动添加题目（通过修改代码中的 problems 数组），或直接编写代码并运行（无标准对比）。
+          <div class="io-example">
+            <div class="io-block"><div class="io-label">📥 示例输入</div><pre id="sample-input"></pre></div>
+            <div class="io-block"><div class="io-label">📤 期望输出</div><pre id="sample-output"></pre></div>
           </div>
         </section>
         <section class="editor-section">
           <div class="editor-header"><span>main.cpp</span><span class="lang-badge">C++</span></div>
-          <textarea id="code" placeholder="// 在此编写你的 C++ 代码...&#10;#include &lt;iostream&gt;&#10;using namespace std;&#10;&#10;int main() {&#10;    cout << \"Hello, Light OJ\" << endl;&#10;    return 0;&#10;}"></textarea>
+          <textarea id="code" placeholder="// 在此输入你的 C++ 代码..."></textarea>
           <div class="submit-area">
-            <button class="btn btn-primary" id="run-btn"><span>▶</span> 编译运行</button>
+            <button class="btn btn-primary" id="run-btn"><span>▶</span> 提交评测</button>
           </div>
         </section>
         <section class="result-panel" id="output">
-          <div style="color: var(--text-secondary); text-align: center;">👆 点击“编译运行”执行你的代码（无题目比对模式）</div>
+          <div style="color: var(--text-secondary); text-align: center;">👆 点击“提交评测”运行你的代码</div>
         </section>
       </main>
     </div>
   </div>
 
   <script>
-const GITHUB_TOKEN = 'https://oj-proxy.yuanjie.workers.dev/submit'; // 安全起见用 Worker 隐藏
-const REPO_OWNER = 'OJ-bot-qing';
-const REPO_NAME = 'OJ-Judge';
-const WORKFLOW_ID = 'judge.yml'; // 或直接是 'judge.yml'，实际用 ID 更可靠
-
-async function submitCode(problemId, code) {
-  // 生成唯一提交ID
-  const submissionId = Date.now() + '-' + Math.random().toString(36).substr(2, 9);
-  
-  // Base64 编码代码（避免特殊字符问题）
-  const codeBase64 = btoa(unescape(encodeURIComponent(code)));
-  
-  // 触发 workflow_dispatch
-  const url = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/actions/workflows/judge.yml/dispatches`;
-  await fetch(url, {
-    method: 'POST',
-    headers: {
-      'Authorization': `token ${GITHUB_TOKEN}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      ref: 'main',
-      inputs: {
-        problem_id: String(problemId),
-        submission_id: submissionId,
-        code: codeBase64
-      }
-    })
-  });
-  
-  // 轮询结果文件
-  const resultUrl = `https://raw.githubusercontent.com/${REPO_OWNER}/${REPO_NAME}/main/results/${submissionId}.txt`;
-  // 等待 Action 执行并提交（需要轮询）
-  for (let i = 0; i < 20; i++) {
-    await new Promise(r => setTimeout(r, 3000)); // 每 3 秒查一次
-    try {
-      const resp = await fetch(resultUrl);
-      if (resp.ok) {
-        const text = await resp.text();
-        displayResult(text, submissionId);
-        return;
-      }
-    } catch (e) { /* 文件还不存在 */ }
-  }
-  displayResult('TIMEOUT: Judge did not finish in time.');
-}
     (function() {
-      // ---------- Wandbox API 配置 ----------
-      const WANDBOX_URL = 'https://wandbox.org/api/compile.json';
-      const COMPILER = 'gcc-head';   // 最新 GCC C++
+      const GITHUB_TOKEN = 'https://oj-proxy.yuanjie.workers.dev/submit'; // 安全起见用 Worker 隐藏
+      const REPO_OWNER = 'OJ-bot-qing';
+      const REPO_NAME = 'OJ-Judge';
+      const WORKFLOW_ID = 'judge.yml'; // 或直接是 'judge.yml'，实际用 ID 更可靠
+      // 题库（18 道 C++ 题目）
+      const problems = [
+        { id: 1, title: "A + B", description: "输入两个整数 A 和 B，输出它们的和。", input: "3 5\n", expected: "8" },
+        { id: 2, title: "两数乘积", description: "输入两个整数，输出它们的乘积。", input: "4 6\n", expected: "24" },
+        { id: 3, title: "绝对值", description: "输入一个整数，输出它的绝对值。", input: "-7\n", expected: "7" },
+        { id: 4, title: "判断奇偶", description: "输入整数 N，偶数输出 \"Even\"，奇数输出 \"Odd\"。", input: "5\n", expected: "Odd" },
+        { id: 5, title: "阶乘", description: "输入 N (1≤N≤10)，输出 N!。", input: "5\n", expected: "120" },
+        { id: 6, title: "最大值", description: "输入三个整数，输出最大值。", input: "7 2 9\n", expected: "9" },
+        { id: 7, title: "斐波那契数列", description: "输入 N (0≤N≤20)，输出斐波那契第 N 项（F0=0,F1=1）。", input: "7\n", expected: "13" },
+        { id: 8, title: "汉诺塔步数", description: "输入盘子数 N (1≤N≤15)，输出所需移动步数（2^N -1）。", input: "4\n", expected: "15" },
+        { id: 9, title: "数字各位和", description: "输入一个非负整数，输出各位数字之和。", input: "12345\n", expected: "15" },
+        { id: 10, title: "无向图连通分量", description: "输入顶点数 N 和边数 M，接着 M 行边（顶点从1开始），统计连通分量个数。\n示例：N=5 M=3 边(1,2)(2,3)(4,5)", input: "5 3\n1 2\n2 3\n4 5\n", expected: "2" },
+        { id: 11, title: "有向图入度统计", description: "输入 N 顶点 M 条有向边，输出每个顶点的入度（空格分隔）。\n示例：N=4 M=4 边 1->2,2->3,3->4,4->1", input: "4 4\n1 2\n2 3\n3 4\n4 1\n", expected: "1 1 1 1" },
+        { id: 12, title: "邻接表DFS遍历", description: "输入 N M，M 条无向边，构建邻接表，输出从顶点1开始的DFS序列（按邻接表顺序从小到大）。\n示例：5 4 边(1,2)(1,3)(2,4)(3,5)", input: "5 4\n1 2\n1 3\n2 4\n3 5\n", expected: "1 2 4 3 5" },
+        { id: 13, title: "无权图最短距离", description: "输入 N M 及起点 S，M 条无向边，输出从 S 到各顶点的最短距离（空格分隔，不可达为-1）。\n示例：4 3 S=1 边(1,2)(2,3)(1,3)", input: "4 3 1\n1 2\n2 3\n1 3\n", expected: "0 1 1 -1" },
+        { id: 14, title: "水仙花数", description: "输入一个三位数 N，判断是否为水仙花数，输出 Yes 或 No。", input: "153\n", expected: "Yes" },
+        { id: 15, title: "质因数分解", description: "输入 N (2≤N≤10000)，输出 N=2*2*3*5... 格式。", input: "60\n", expected: "60=2*2*3*5" },
+        { id: 16, title: "字符串数字个数", description: "输入一行字符串（不含空格），输出数字字符的个数。", input: "abc123def45\n", expected: "5" },
+        { id: 17, title: "矩阵转置", description: "输入 N（方阵），接着 N*N 整数，输出转置矩阵（行内空格分隔，行间换行）。\n示例：2×2 1 2 / 3 4", input: "2\n1 2\n3 4\n", expected: "1 3\n2 4" },
+        { id: 18, title: "简单排序", description: "输入 N 及 N 个整数，输出升序排序后的序列（空格分隔）。", input: "5 3 1 4 1 5\n", expected: "1 1 3 4 5" }
+      ];
 
-      // ========== 所有预置题目已全部删除 ==========
-      const problems = [];   // 题库完全清空
+      let currentProblem = problems[0];
 
-      let currentProblem = null;      // 无题目时保持 null
       const problemListEl = document.getElementById('problem-list');
       const detailTitle = document.getElementById('detail-title');
       const detailDesc = document.getElementById('detail-desc');
@@ -155,313 +179,129 @@ async function submitCode(problemId, code) {
       const codeTextarea = document.getElementById('code');
       const runBtn = document.getElementById('run-btn');
       const outputEl = document.getElementById('output');
-      const ioExampleArea = document.getElementById('io-example-area');
 
-      // 辅助函数：转义HTML
-      function escapeHtml(t) { 
-        if (t === undefined || t === null) return '';
-        return String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); 
+      function escapeHtml(text) {
+        return String(text).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
       }
 
-      // ---------- 渲染空题库侧边栏 ----------
-      function renderEmptySidebar() {
-        // 清空原有内容，显示空状态消息
-        problemListEl.innerHTML = `
-          <h2>📚 题目列表</h2>
-          <div class="empty-sidebar">
-            🧩 题库为空<br>
-            <span style="font-size:0.75rem;">所有预置题目已删除</span><br>
-            <span style="font-size:0.7rem; margin-top:6px; display:inline-block;">你可以通过修改代码中的 problems 数组添加新题目</span>
-          </div>
-        `;
-      }
-
-      // 渲染空题目详情面板（无选中题目）
-      function renderEmptyDetail() {
-        detailTitle.textContent = "📭 暂无题目";
-        detailDesc.textContent = "当前题库没有任何题目。请手动添加题目至 problems 数组，或直接使用下方编辑器编写代码并运行（无期望输出对比）。";
-        // 隐藏/清空输入输出示例区域的内容
-        sampleInput.textContent = "— (无示例) —";
-        sampleOutput.textContent = "— (无示例) —";
-        // 可选择性隐藏io区域样式微调，但保留占位
-        if (ioExampleArea) {
-          ioExampleArea.style.opacity = '0.8';
-        }
-      }
-
-      // 更新详情面板 (仅在currentProblem存在时调用)
-      function updateDetailPanel() {
-        if (!currentProblem) {
-          renderEmptyDetail();
-          return;
-        }
-        // 恢复透明度
-        if (ioExampleArea) ioExampleArea.style.opacity = '1';
-        detailTitle.textContent = `📝 ${escapeHtml(currentProblem.title)}`;
-        detailDesc.textContent = currentProblem.description || "无描述";
-        sampleInput.textContent = currentProblem.input ? currentProblem.input.trimEnd() : "(空输入)";
-        sampleOutput.textContent = currentProblem.expected ? currentProblem.expected.trimEnd() : "(空输出)";
-      }
-
-      // 切换题目 (由于题库为空，此函数在添加题目后才可能被调用，防御实现)
-      function switchProblem(p) {
-        if (!p) return;
-        currentProblem = p;
-        codeTextarea.value = '';    // 切换题目时清空编辑器（可选）
-        outputEl.innerHTML = '<div style="color: var(--text-secondary); text-align: center;">📌 已切换题目，点击“编译运行”提交代码</div>';
-        updateDetailPanel();
-        // 高亮侧边栏active状态（如果存在卡片）
-        const cards = document.querySelectorAll('.problem-card');
-        cards.forEach(card => {
-          const titleSpan = card.querySelector('.problem-title');
-          if (titleSpan && titleSpan.innerText === p.title) {
-            card.classList.add('active');
-          } else {
-            card.classList.remove('active');
-          }
-        });
-      }
-
-      // 渲染问题列表（自适应空库，但由于无题目，只调用空渲染）
       function renderProblemList() {
-        if (!problems.length) {
-          renderEmptySidebar();
-          return;
-        }
-        // 以下为有题目时的渲染逻辑（保留，但当前 problems 为空永不进入）
-        let html = '<h2>📚 题目列表</h2>';
+        problemListEl.innerHTML = '<h2>📚 题目列表</h2>';
         problems.forEach(p => {
-          html += `
-            <div class="problem-card" data-id="${p.id}">
-              <div class="problem-title">${escapeHtml(p.title)}</div>
-              <div class="problem-desc">${escapeHtml((p.description || '').substring(0, 50))}${(p.description || '').length > 50 ? '...' : ''}</div>
-            </div>
-          `;
+          const card = document.createElement('div');
+          card.className = `problem-card ${p.id === currentProblem.id ? 'active' : ''}`;
+          card.innerHTML = `<div class="problem-title">${escapeHtml(p.title)}</div><div class="problem-desc">${escapeHtml(p.description.substring(0, 50))}...</div>`;
+          card.addEventListener('click', () => switchProblem(p));
+          problemListEl.appendChild(card);
         });
-        problemListEl.innerHTML = html;
-        // 绑定点击事件
-        document.querySelectorAll('.problem-card').forEach((card, idx) => {
-          card.addEventListener('click', () => {
-            const problem = problems[idx];
-            if (problem) switchProblem(problem);
-          });
-        });
-        // 默认选中第一个题目
-        if (problems.length > 0) {
-          switchProblem(problems[0]);
-        } else {
-          renderEmptyDetail();
-        }
       }
 
-      // ---------- 纯编译运行函数（无期望值对比）----------
-      async function handleRunOnly() {
-        const code = codeTextarea.value.trim();
-        if (!code) {
-          outputEl.innerHTML = '<div class="result-status result-error">⚠️ 请先输入 C++ 代码</div>';
-          return;
-        }
-
-        // 如果没有题目，仍然允许编译运行，但只显示输出结果，不进行答案对比
-        // 获取自定义输入？原题目系统依赖 currentProblem.input，但是题库为空时 currentProblem 为 null
-        // 为保留实用性，提供一个默认的标准输入（空字符串），用户可以在代码中自行处理输入或自定义输入。
-        // 由于题目已被删除，用户没有预期输入，因此标准输入设为空字符串，但额外显示提示用户可通过修改代码读取控制台。
-        let stdinData = "";
-        // 如果恰好存在某个当前题目（理论上不会，但防御），则使用题目的输入；否则提示无预设输入
-        if (currentProblem && currentProblem.input) {
-          stdinData = currentProblem.input;
-        } else {
-          // 无题目模式，允许用户自由发挥，不提供预设输入；为了更好的体验，弹出一个提示但不清除功能
-          // 直接留空，大部分测试不依赖输入也可运行。
-          stdinData = "";
-        }
-
-        runBtn.disabled = true;
-        outputEl.innerHTML = '<div class="result-status" style="color: var(--text-secondary);">⏳ 编译运行中，请稍后...</div>';
-
-        const maxRetries = 2;
-        const retryDelay = 1500;
-        let success = false;
-
-        for (let attempt = 1; attempt <= maxRetries; attempt++) {
-          try {
-            const resp = await fetch(WANDBOX_URL, {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ compiler: COMPILER, code: code, stdin: stdinData })
-            });
-            if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
-            const data = await resp.json();
-
-            const compilerMsg = data.compiler_message || '';
-            const programMsg = data.program_message || '';
-            const errorMsg = compilerMsg || programMsg || '';
-
-            // 处理资源临时不可用
-            if (data.status !== '0' && errorMsg.includes('Resource temporarily unavailable')) {
-              if (attempt < maxRetries) {
-                outputEl.innerHTML = `<div class="result-status" style="color: var(--text-secondary);">⚠️ 服务器繁忙，重试中 (${attempt}/${maxRetries})...</div>`;
-                await new Promise(r => setTimeout(r, retryDelay));
-                continue;
-              } else {
-                outputEl.innerHTML = '<div class="result-status result-error">⚠️ Wandbox 服务繁忙，请稍后再试</div>';
-                break;
-              }
-            }
-
-            // 编译或运行错误
-            if (data.status !== '0') {
-              outputEl.innerHTML = `
-                <div class="result-status result-error">⚠️ 编译 / 运行错误</div>
-                <div class="result-detail" style="background:#fff7ed;">${escapeHtml(errorMsg) || '未知错误'}</div>
-              `;
-            } else {
-              // 成功：展示程序输出
-              const output = programMsg || '(程序无输出)';
-              // 如果没有题目或者当前题目无期望值，只显示原始输出（不判断对错）
-              if (!currentProblem || !currentProblem.expected) {
-                outputEl.innerHTML = `
-                  <div class="result-status" style="color: #2c7a4d;">✅ 程序执行成功</div>
-                  <div class="result-detail">${escapeHtml(output)}</div>
-                  <div style="font-size:0.75rem; margin-top:8px; color: var(--text-secondary);">⚡ 当前无题目期望对比，仅展示运行结果。</div>
-                `;
-              } else {
-                // 遗留兼容：如果存在题目（以后扩展）才进行期望比对
-                const actual = (programMsg || '').replace(/\s+$/, '');
-                const expected = currentProblem.expected.replace(/\s+$/, '');
-                if (actual === expected) {
-                  outputEl.innerHTML = `<div class="result-status result-accepted">✅ 答案正确 (Accepted)</div><div class="result-detail">${escapeHtml(actual) || '(无输出)'}</div>`;
-                } else {
-                  outputEl.innerHTML = `<div class="result-status result-wrong">❌ 答案错误 (Wrong Answer)</div>
-                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-top:0.5rem;">
-                      <div><div style="font-weight:600;">期望输出</div><div class="result-detail">${escapeHtml(expected) || '(空)'}</div></div>
-                      <div><div style="font-weight:600;">你的输出</div><div class="result-detail">${escapeHtml(actual) || '(空)'}</div></div>
-                    </div>`;
-                }
-              }
-            }
-            success = true;
-            break;
-          } catch (err) {
-            if (attempt < maxRetries) {
-              outputEl.innerHTML = `<div class="result-status" style="color: var(--text-secondary);">🌐 网络波动，重试 (${attempt}/${maxRetries})...</div>`;
-              await new Promise(r => setTimeout(r, retryDelay));
-            } else {
-              outputEl.innerHTML = `<div class="result-status result-error">❌ 网络错误: ${escapeHtml(err.message)}</div>`;
-            }
-          }
-        }
-        runBtn.disabled = false;
+      function switchProblem(problem) {
+        currentProblem = problem;
+        codeTextarea.value = '';
+        outputEl.innerHTML = '<div style="color: var(--text-secondary); text-align: center;">👆 点击“提交评测”运行你的代码</div>';
+        updateDetailPanel();
+        renderProblemList();
       }
 
-      // ---------- 提交评测包装（空题库模式直接调用纯编译运行）----------
+      function updateDetailPanel() {
+        detailTitle.textContent = `📝 ${currentProblem.title}`;
+        detailDesc.textContent = currentProblem.description;
+        sampleInput.textContent = currentProblem.input.trimEnd();
+        sampleOutput.textContent = currentProblem.expected;
+      }
+
+      // 提交判题（通过 Worker）
       async function handleSubmit() {
-        // 无题目时，直接进入纯编译运行模式，不做标准答案对比
-        if (!problems.length || !currentProblem) {
-          // 提示用户当前为空库模式，仅编译运行
-          await handleRunOnly();
-          return;
-        }
-        // 如果未来手动添加了题目，走正常判题逻辑（含对比）
         const code = codeTextarea.value.trim();
         if (!code) {
           outputEl.innerHTML = '<div class="result-status result-error">⚠️ 请先输入代码</div>';
           return;
         }
-        if (!currentProblem) {
-          outputEl.innerHTML = '<div class="result-status result-error">⚠️ 未选中任何题目，无法评测</div>';
-          return;
-        }
 
         runBtn.disabled = true;
-        outputEl.innerHTML = '<div class="result-status" style="color: var(--text-secondary);">⏳ 评测中...</div>';
-        const maxRetries = 2;
-        const retryDelay = 1500;
+        outputEl.innerHTML = '<div class="result-status" style="color: var(--text-secondary);">⏳ 提交判题中...</div>';
 
-        for (let attempt = 1; attempt <= maxRetries; attempt++) {
-          try {
-            const resp = await fetch(WANDBOX_URL, {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ compiler: COMPILER, code: code, stdin: currentProblem.input })
-            });
-            if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
-            const data = await resp.json();
-            const errMsg = data.compiler_message || data.program_message || '';
-            if (data.status !== '0' && errMsg.includes('Resource temporarily unavailable')) {
-              if (attempt < maxRetries) {
-                await new Promise(r => setTimeout(r, retryDelay));
-                continue;
-              } else {
-                outputEl.innerHTML = '<div class="result-status result-error">⚠️ 服务器繁忙，请稍后重试</div>';
-                break;
-              }
-            }
-            if (data.status !== '0') {
-              outputEl.innerHTML = `<div class="result-status result-error">⚠️ 编译或运行错误</div><div class="result-detail">${escapeHtml(errMsg)}</div>`;
-            } else {
-              const actual = (data.program_message || '').replace(/\s+$/, '');
-              const expected = currentProblem.expected.replace(/\s+$/, '');
-              if (actual === expected) {
-                outputEl.innerHTML = `<div class="result-status result-accepted">✅ 答案正确 (Accepted)</div><div class="result-detail">${escapeHtml(actual) || '(无输出)'}</div>`;
-              } else {
-                outputEl.innerHTML = `<div class="result-status result-wrong">❌ 答案错误 (Wrong Answer)</div>
-                  <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-top:0.5rem;">
-                    <div><div style="font-weight:600;">期望输出</div><div class="result-detail">${escapeHtml(expected) || '(空)'}</div></div>
-                    <div><div style="font-weight:600;">你的输出</div><div class="result-detail">${escapeHtml(actual) || '(空)'}</div></div>
-                  </div>`;
-              }
-            }
-            break;
-          } catch (err) {
-            if (attempt < maxRetries) {
-              await new Promise(r => setTimeout(r, retryDelay));
-            } else {
-              outputEl.innerHTML = `<div class="result-status result-error">⚠️ 网络错误：${escapeHtml(err.message)}</div>`;
-            }
+        try {
+          // 1. 通过 Worker 提交代码
+          const workerResp = await fetch(WORKER_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              problem_id: currentProblem.id,
+              code: code
+            })
+          });
+
+          if (!workerResp.ok) {
+            const errText = await workerResp.text();
+            throw new Error(`Worker 错误: ${workerResp.status} ${errText}`);
           }
+
+          const { submissionId } = await workerResp.json();
+
+          // 2. 轮询结果文件
+          const resultUrl = `https://raw.githubusercontent.com/${REPO_OWNER}/${REPO_NAME}/main/results/${submissionId}.txt`;
+
+          outputEl.innerHTML = '<div class="result-status">⏳ 等待评测结果...</div>';
+
+          for (let i = 0; i < 25; i++) {  // 最多等 25*3 = 75 秒
+            await new Promise(resolve => setTimeout(resolve, 3000));
+            try {
+              const resp = await fetch(resultUrl);
+              if (resp.ok) {
+                const text = await resp.text();
+                displayResult(text);
+                return;
+              }
+            } catch (e) { /* 文件未生成，继续等待 */ }
+          }
+
+          outputEl.innerHTML = '<div class="result-status result-error">⏰ 评测超时，请稍后刷新查看，或前往 Actions 页面检查</div>';
+
+        } catch (err) {
+          outputEl.innerHTML = `<div class="result-status result-error">⚠️ 请求失败：${escapeHtml(err.message)}</div>`;
+        } finally {
+          runBtn.disabled = false;
         }
-        runBtn.disabled = false;
       }
 
-      // 绑定点提交按钮事件（根据是否有题目自适应行为）
-      runBtn.addEventListener('click', () => {
-        if (!problems.length || !currentProblem) {
-          handleRunOnly();
+      function displayResult(resultText) {
+        const lines = resultText.trim().split('\n');
+        const verdict = lines[0].trim();
+
+        if (verdict === 'ACCEPTED') {
+          outputEl.innerHTML = `<div class="result-status result-accepted">✅ 答案正确 (Accepted)</div>`;
+        } else if (verdict === 'WRONG_ANSWER') {
+          const detail = lines.slice(1).join('\n');
+          outputEl.innerHTML = `<div class="result-status result-wrong">❌ 答案错误 (Wrong Answer)</div>
+            <div class="result-detail">${escapeHtml(detail || '无额外信息')}</div>`;
+        } else if (verdict === 'COMPILE_ERROR') {
+          const detail = lines.slice(1).join('\n');
+          outputEl.innerHTML = `<div class="result-status result-error">⚠️ 编译错误</div>
+            <div class="result-detail" style="background:#fff7ed;">${escapeHtml(detail || '未知编译错误')}</div>`;
+        } else if (verdict === 'RUNTIME_ERROR') {
+          const detail = lines.slice(1).join('\n');
+          outputEl.innerHTML = `<div class="result-status result-error">⚠️ 运行时错误</div>
+            <div class="result-detail" style="background:#fff7ed;">${escapeHtml(detail || '')}</div>`;
+        } else if (verdict === 'TIME_LIMIT_EXCEEDED') {
+          outputEl.innerHTML = `<div class="result-status result-error">⏰ 运行超时</div>`;
         } else {
-          handleSubmit();
+          outputEl.innerHTML = `<div class="result-status result-error">❓ 未知结果：${escapeHtml(resultText)}</div>`;
         }
-      });
-      
-      // 快捷键 Ctrl/Cmd + Enter
+      }
+
+      runBtn.addEventListener('click', handleSubmit);
       codeTextarea.addEventListener('keydown', (e) => {
         if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
           e.preventDefault();
-          if (!problems.length || !currentProblem) {
-            handleRunOnly();
-          } else {
-            handleSubmit();
-          }
+          handleSubmit();
         }
       });
 
-      // ---------- 初始化页面（空库模式）----------
-      function initEmptyMode() {
-        // 题库为空，无任何题目
-        renderProblemList();   // 会显示空侧边栏
-        renderEmptyDetail();   // 详情显示无题目
-        currentProblem = null;
-        // 额外说明一下提交按钮的行为：直接编译运行且不对期望输出
-        const noteMsg = document.createElement('div');
-        // 防重复添加
-        if (!document.querySelector('.mode-note')) {
-          const resultPanel = document.querySelector('.result-panel');
-          // 保留原有信息，但补充说明
-        }
-        }
-      }
-
-      initEmptyMode();
+      // 初始化
+      renderProblemList();
+      updateDetailPanel();
+      codeTextarea.value = '';
     })();
   </script>
 </body>
