@@ -143,10 +143,12 @@
 
   <script>
     (function() {
+      // ====== 配置区======
       const WORKER_URL = 'https://oj-proxy.yuanjie.workers.dev/submit';
-      const REPO_OWNER = 'OJ-bot-qing';
+      const REPO_OWNER = 'qingchuanhub';
       const REPO_NAME = 'OJ-Judge';
-      const WORKFLOW_ID = 'judge.yml'; // 或直接是 'judge.yml'，实际用 ID 更可靠
+      // ==========================================
+
       // 题库（18 道 C++ 题目）
       const problems = [
         { id: 1, title: "A + B", description: "输入两个整数 A 和 B，输出它们的和。", input: "3 5\n", expected: "8" },
