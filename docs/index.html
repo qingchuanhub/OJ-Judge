@@ -92,6 +92,52 @@
   </div>
 
   <script>
+const GITHUB_TOKEN = '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'; // 安全起见，后面用 Worker 隐藏
+const REPO_OWNER = 'qingchuanhub';
+const REPO_NAME = 'online-judge';
+const WORKFLOW_ID = 'judge.yml'; // 或直接是 'judge.yml'，实际用 ID 更可靠
+
+async function submitCode(problemId, code) {
+  // 生成唯一提交ID
+  const submissionId = Date.now() + '-' + Math.random().toString(36).substr(2, 9);
+  
+  // Base64 编码代码（避免特殊字符问题）
+  const codeBase64 = btoa(unescape(encodeURIComponent(code)));
+  
+  // 触发 workflow_dispatch
+  const url = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/actions/workflows/judge.yml/dispatches`;
+  await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Authorization': `token ${GITHUB_TOKEN}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      ref: 'main',
+      inputs: {
+        problem_id: String(problemId),
+        submission_id: submissionId,
+        code: codeBase64
+      }
+    })
+  });
+  
+  // 轮询结果文件
+  const resultUrl = `https://raw.githubusercontent.com/${REPO_OWNER}/${REPO_NAME}/main/results/${submissionId}.txt`;
+  // 等待 Action 执行并提交（需要轮询）
+  for (let i = 0; i < 20; i++) {
+    await new Promise(r => setTimeout(r, 3000)); // 每 3 秒查一次
+    try {
+      const resp = await fetch(resultUrl);
+      if (resp.ok) {
+        const text = await resp.text();
+        displayResult(text, submissionId);
+        return;
+      }
+    } catch (e) { /* 文件还不存在 */ }
+  }
+  displayResult('TIMEOUT: Judge did not finish in time.');
+}
     (function() {
       // ---------- Wandbox API 配置 ----------
       const WANDBOX_URL = 'https://wandbox.org/api/compile.json';
