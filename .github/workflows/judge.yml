@@ -31,8 +31,8 @@ jobs:
 
       - name: Commit results
         run: |
-          git config user.name "OJ Bot"
-          git config user.email "bot@oj.local"
+          git config user.name "OJ-bot-qing"
+          git config user.email "oj-bot@qingoj.qzz.io"
           git add results/
           git commit -m "Judge result for submission ${{ github.event.inputs.submission_id }}" || true
           git push
